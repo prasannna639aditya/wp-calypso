@@ -594,7 +594,7 @@ export function isDomainFulfilled( stepName, nextProps ) {
 	}
 }
 
-export function isPlanFulfilled( stepName, nextProps ) {
+export function isPlanFulfilled( stepName, defaultDependencies, nextProps ) {
 	const { isPaidPlan, sitePlanSlug } = nextProps;
 	let fulfilledDependencies = [];
 
@@ -602,7 +602,11 @@ export function isPlanFulfilled( stepName, nextProps ) {
 		const cartItem = undefined;
 		SignupActions.submitSignupStep( { stepName: stepName, cartItem }, [], { cartItem } );
 		recordExcludeStepEvent( stepName, sitePlanSlug );
-
+		fulfilledDependencies = fulfilledDependencies.concat( [ 'cartItem' ] );
+	} else if ( defaultDependencies &&  defaultDependencies.cartItem ) {
+		const cartItem = getCartItemForPlan( defaultDependencies.cartItem );
+		SignupActions.submitSignupStep( { stepName, cartItem }, [], { cartItem } );
+		recordExcludeStepEvent( stepName, defaultDependencies.cartItem );
 		fulfilledDependencies = fulfilledDependencies.concat( [ 'cartItem' ] );
 	}
 
@@ -692,3 +696,5 @@ export function isSiteTopicFulfilled( stepName, nextProps ) {
 		flows.excludeStep( stepName );
 	}
 }
+
+
