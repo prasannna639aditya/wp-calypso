@@ -25,6 +25,7 @@ import {
 } from 'lodash';
 import bodyParser from 'body-parser';
 import superagent from 'superagent';
+import { matchesUA } from 'browserslist-useragent';
 
 /**
  * Internal dependencies
@@ -83,16 +84,41 @@ function getInitialServerState( serializedServerState ) {
 	return pick( serverState, Object.keys( serializedServerState ) );
 }
 
-const ASSETS_PATH = path.join( __dirname, '../', 'bundler', 'assets.json' );
-const getAssets = ( () => {
-	let assets;
-	return () => {
-		if ( ! assets ) {
-			assets = JSON.parse( fs.readFileSync( ASSETS_PATH, 'utf8' ) );
-		}
-		return assets;
-	};
-} )();
+/**
+ * Checks whether a user agent is included in the browser list for an environment.
+ * @param {String} userAgentString The user agent string.
+ * @param {String} environment The `browserslist` environment.
+ *
+ * @returns {Boolean} Whether the user agent is included in the browser list.
+ */
+function isUAInBrowserslist( userAgentString, environment = 'defaults' ) {
+	return matchesUA( userAgentString, {
+		env: environment,
+		ignorePatch: true,
+		ignoreMinor: true,
+		allowHigherVersions: true,
+	} );
+}
+
+function getBuildTargetFromRequest( request ) {
+	const isEvergreen = isUAInBrowserslist( request.useragent.source, 'evergreen' );
+	const isForcedFallback = request.query.forceFallback;
+	return isEvergreen && ! isForcedFallback ? 'evergreen' : null;
+}
+
+const ASSETS_PATH = path.join( __dirname, '../', 'bundler' );
+function getAssetsPath( target ) {
+	const result = path.join( ASSETS_PATH, target ? `assets-${ target }.json` : 'assets.json' );
+	return result;
+}
+
+const cachedAssets = {};
+const getAssets = target => {
+	if ( ! cachedAssets[ target ] ) {
+		cachedAssets[ target ] = JSON.parse( fs.readFileSync( getAssetsPath( target ), 'utf8' ) );
+	}
+	return cachedAssets[ target ];
+};
 
 const EMPTY_ASSETS = { js: [], 'css.ltr': [], 'css.rtl': [] };
 
@@ -109,8 +135,10 @@ const getAssetType = asset => {
 
 const groupAssetsByType = assets => defaults( groupBy( assets, getAssetType ), EMPTY_ASSETS );
 
-const getFilesForChunk = chunkName => {
-	const assets = getAssets();
+const getFilesForChunk = ( chunkName, request ) => {
+	const target = getBuildTargetFromRequest( request );
+
+	const assets = getAssets( target );
 
 	function getChunkByName( _chunkName ) {
 		return assets.chunks.find( chunk => chunk.names.some( name => name === _chunkName ) );
@@ -137,8 +165,8 @@ const getFilesForChunk = chunkName => {
 	return groupAssetsByType( allTheFiles );
 };
 
-const getFilesForEntrypoint = () => {
-	const entrypointAssets = getAssets().entrypoints.build.assets.filter(
+const getFilesForEntrypoint = target => {
+	const entrypointAssets = getAssets( target ).entrypoints.build.assets.filter(
 		asset => ! asset.startsWith( 'manifest' )
 	);
 	return groupAssetsByType( entrypointAssets );
@@ -148,11 +176,13 @@ const getFilesForEntrypoint = () => {
  * Generate an object that maps asset names name to a server-relative urls.
  * Assets in request and static files are included.
  *
+ * @param {String} target The build target name.
+ *
  * @returns {Object} Map of asset names to urls
  **/
-function generateStaticUrls() {
+function generateStaticUrls( target ) {
 	const urls = { ...staticFilesUrls };
-	const assets = getAssets().assetsByChunkName;
+	const assets = getAssets( target ).assetsByChunkName;
 
 	forEach( assets, ( asset, name ) => {
 		urls[ name ] = asset;
@@ -262,10 +292,12 @@ function getDefaultContext( request ) {
 		lang = request.context.lang;
 	}
 
+	const target = getBuildTargetFromRequest( request );
+
 	const context = Object.assign( {}, request.context, {
 		commitSha: process.env.hasOwnProperty( 'COMMIT_SHA' ) ? process.env.COMMIT_SHA : '(unknown)',
 		compileDebug: process.env.NODE_ENV === 'development',
-		urls: generateStaticUrls(),
+		urls: generateStaticUrls( target ),
 		user: false,
 		env: calypsoEnv,
 		sanitize: sanitize,
@@ -273,8 +305,8 @@ function getDefaultContext( request ) {
 		isDebug,
 		badge: false,
 		lang,
-		entrypoint: getFilesForEntrypoint(),
-		manifest: getAssets().manifests.manifest,
+		entrypoint: getFilesForEntrypoint( target ),
+		manifest: getAssets( target ).manifests.manifest,
 		faviconURL: config( 'favicon_url' ),
 		isFluidWidth: !! config.isEnabled( 'fluid-width' ),
 		abTestHelper: !! config.isEnabled( 'dev/test-helper' ),
@@ -282,6 +314,7 @@ function getDefaultContext( request ) {
 		devDocsURL: '/devdocs',
 		store: createReduxStore( initialServerState ),
 		bodyClasses,
+		isEvergreen: target === 'evergreen',
 	} );
 
 	context.app = {
@@ -553,9 +586,11 @@ function renderServerError( err, req, res, next ) {
 		console.error( err );
 	}
 
+	const target = getBuildTargetFromRequest( req );
+
 	res.status( err.status || 500 );
 	const ctx = {
-		urls: generateStaticUrls(),
+		urls: generateStaticUrls( target ),
 		faviconURL: config( 'favicon_url' ),
 	};
 	res.send( renderJsx( '500', ctx ) );
@@ -719,7 +754,7 @@ module.exports = function() {
 					req.context = Object.assign( {}, req.context, { sectionName: section.name } );
 
 					if ( config.isEnabled( 'code-splitting' ) ) {
-						req.context.chunkFiles = getFilesForChunk( section.name );
+						req.context.chunkFiles = getFilesForChunk( section.name, req );
 					} else {
 						req.context.chunkFiles = EMPTY_ASSETS;
 					}

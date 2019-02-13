@@ -62,6 +62,7 @@ class Document extends React.Component {
 			feedbackURL,
 			inlineScriptNonce,
 			isSupportSession,
+			isEvergreen,
 		} = this.props;
 
 		const csskey = isRTL ? 'css.rtl' : 'css.ltr';
@@ -174,6 +175,30 @@ class Document extends React.Component {
 							__html: inlineScript,
 						} }
 					/>
+
+					{ // Use <script nomodule> to redirect browsers with no ES module
+					// support to the fallback build. ES module support is a convenient
+					// test to determine that a browser is modern enough to handle
+					// the evergreen bundle.
+					isEvergreen && (
+						<script
+							nonce={ inlineScriptNonce }
+							noModule={ true }
+							dangerouslySetInnerHTML={ {
+								__html: `
+							(function() {
+								var url = window.location.href;
+
+								if ( url.indexOf( 'forceFallback=1' ) === -1 ) {
+									url += ( url.indexOf( '?' ) !== -1 ? '&' : '?' );
+									url += 'forceFallback=1';
+									window.location.href = url;
+								}
+							})();
+							`,
+							} }
+						/>
+					) }
 
 					{ i18nLocaleScript && <script src={ i18nLocaleScript } /> }
 					{ /*

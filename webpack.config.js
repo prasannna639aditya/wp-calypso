@@ -46,9 +46,9 @@ const shouldCheckForCycles = process.env.CHECK_CYCLES === 'true';
 const codeSplit = config.isEnabled( 'code-splitting' );
 const isCalypsoClient = process.env.CALYPSO_CLIENT === 'true';
 
-const browserslistEnvironment = 'defaults';
+const browserslistEnvironment = process.env.BROWSERSLIST_ENV || 'defaults';
 const browsers = browserslist( null, { env: browserslistEnvironment } );
-process.env.BROWSERSLIST_ENV = browserslistEnvironment;
+const extraPath = browserslistEnvironment === 'defaults' ? '' : browserslistEnvironment;
 
 /**
  * Plugin that generates the `public/custom-properties.css` file before compilation
@@ -209,8 +209,8 @@ function getWebpackConfig( {
 		mode: isDevelopment ? 'development' : 'production',
 		devtool: process.env.SOURCEMAP || ( isDevelopment ? '#eval' : false ),
 		output: {
-			path: path.join( __dirname, 'public' ),
-			publicPath: '/calypso/',
+			path: path.join( __dirname, 'public', extraPath ),
+			publicPath: `/calypso/${ extraPath !== '' ? extraPath + '/' : '' }`,
 			filename: '[name].[chunkhash].min.js', // prefer the chunkhash, which depends on the chunk, not the entire build
 			chunkFilename: '[name].[chunkhash].min.js', // ditto
 			devtoolModuleFilenameTemplate: 'app:///[resource-path]',
@@ -264,7 +264,7 @@ function getWebpackConfig( {
 							options: {
 								configFile: path.resolve( __dirname, 'babel.config.js' ),
 								babelrc: false,
-								cacheDirectory: path.join( __dirname, 'build', '.babel-client-cache' ),
+								cacheDirectory: path.join( __dirname, 'build', '.babel-client-cache', extraPath ),
 								cacheIdentifier,
 							},
 						},
@@ -374,8 +374,12 @@ function getWebpackConfig( {
 				minify: ! isDevelopment,
 			} ),
 			new AssetsWriter( {
-				filename: 'assets.json',
+				filename:
+					browserslistEnvironment === 'defaults'
+						? 'assets.json'
+						: `assets-${ browserslistEnvironment }.json`,
 				path: path.join( __dirname, 'server', 'bundler' ),
+				assetExtraPath: extraPath,
 			} ),
 			new DuplicatePackageCheckerPlugin(),
 			shouldCheckForCycles &&
