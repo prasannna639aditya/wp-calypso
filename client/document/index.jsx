@@ -183,7 +183,7 @@ class Document extends React.Component {
 					isEvergreen && (
 						<script
 							nonce={ inlineScriptNonce }
-							noModule={ true }
+							noModule
 							dangerouslySetInnerHTML={ {
 								__html: `
 							(function() {
