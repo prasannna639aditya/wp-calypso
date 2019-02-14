@@ -319,7 +319,7 @@ function getDefaultContext( request ) {
 		devDocsURL: '/devdocs',
 		store: createReduxStore( initialServerState ),
 		bodyClasses,
-		isEvergreen: target === 'evergreen' && calypsoEnv !== 'development',
+		addEvergreenCheck: target === 'evergreen' && calypsoEnv !== 'development',
 	} );
 
 	context.app = {
