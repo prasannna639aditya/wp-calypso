@@ -48,7 +48,7 @@ const isCalypsoClient = process.env.CALYPSO_CLIENT === 'true';
 
 const browserslistEnvironment = process.env.BROWSERSLIST_ENV || 'defaults';
 const browsers = browserslist( null, { env: browserslistEnvironment } );
-const extraPath = browserslistEnvironment === 'defaults' ? '' : browserslistEnvironment;
+const extraPath = browserslistEnvironment === 'defaults' ? 'fallback' : browserslistEnvironment;
 
 /**
  * Plugin that generates the `public/custom-properties.css` file before compilation
@@ -210,7 +210,7 @@ function getWebpackConfig( {
 		devtool: process.env.SOURCEMAP || ( isDevelopment ? '#eval' : false ),
 		output: {
 			path: path.join( __dirname, 'public', extraPath ),
-			publicPath: `/calypso/${ extraPath !== '' ? extraPath + '/' : '' }`,
+			publicPath: `/calypso/${ extraPath }/`,
 			filename: '[name].[chunkhash].min.js', // prefer the chunkhash, which depends on the chunk, not the entire build
 			chunkFilename: '[name].[chunkhash].min.js', // ditto
 			devtoolModuleFilenameTemplate: 'app:///[resource-path]',

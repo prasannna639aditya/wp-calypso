@@ -28,17 +28,20 @@ test-results*.xml
 
 /build
 
-/public/*.js
-/public/*.js.map
 /public/*.css
 /public/*.css.map
-/public/vendors~*
-/public/sections/*
-/public/sections-rtl/*
-/public/images/*.gif
-/public/images/*.jpg
-/public/images/*.png
-/public/images/*.svg
+
+/public/fallback/*.js
+/public/fallback/*.js.map
+/public/fallback/*.css
+/public/fallback/*.css.map
+/public/fallback/vendors~*
+/public/fallback/sections/*
+/public/fallback/sections-rtl/*
+/public/fallback/images/*.gif
+/public/fallback/images/*.jpg
+/public/fallback/images/*.png
+/public/fallback/images/*.svg
 
 /public/evergreen/*.js
 /public/evergreen/*.js.map
