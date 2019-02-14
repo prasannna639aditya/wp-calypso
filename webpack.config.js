@@ -46,7 +46,7 @@ const shouldCheckForCycles = process.env.CHECK_CYCLES === 'true';
 const codeSplit = config.isEnabled( 'code-splitting' );
 const isCalypsoClient = process.env.CALYPSO_CLIENT === 'true';
 
-const browserslistEnvironment = process.env.BROWSERSLIST_ENV || 'defaults';
+const browserslistEnvironment = process.env.BROWSERSLIST_ENV || 'evergreen';
 const browsers = browserslist( null, { env: browserslistEnvironment } );
 const extraPath = browserslistEnvironment === 'defaults' ? 'fallback' : browserslistEnvironment;
 
@@ -376,7 +376,7 @@ function getWebpackConfig( {
 			new AssetsWriter( {
 				filename:
 					browserslistEnvironment === 'defaults'
-						? 'assets.json'
+						? 'assets-fallback.json'
 						: `assets-${ browserslistEnvironment }.json`,
 				path: path.join( __dirname, 'server', 'bundler' ),
 				assetExtraPath: extraPath,
