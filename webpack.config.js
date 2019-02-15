@@ -46,9 +46,10 @@ const shouldCheckForCycles = process.env.CHECK_CYCLES === 'true';
 const codeSplit = config.isEnabled( 'code-splitting' );
 const isCalypsoClient = process.env.CALYPSO_CLIENT === 'true';
 
-const browserslistEnvironment = process.env.BROWSERSLIST_ENV || 'evergreen';
-const browsers = browserslist( null, { env: browserslistEnvironment } );
-const extraPath = browserslistEnvironment === 'defaults' ? 'fallback' : browserslistEnvironment;
+const defaultBrowserslistEnv = isCalypsoClient ? 'evergreen' : 'defaults';
+const browserslistEnv = process.env.BROWSERSLIST_ENV || defaultBrowserslistEnv;
+const browsers = browserslist( null, { env: browserslistEnv } );
+const extraPath = browserslistEnv === 'defaults' ? 'fallback' : browserslistEnv;
 
 /**
  * Plugin that generates the `public/custom-properties.css` file before compilation
@@ -376,9 +377,9 @@ function getWebpackConfig( {
 			isCalypsoClient &&
 				new AssetsWriter( {
 					filename:
-						browserslistEnvironment === 'defaults'
+						browserslistEnv === 'defaults'
 							? 'assets-fallback.json'
-							: `assets-${ browserslistEnvironment }.json`,
+							: `assets-${ browserslistEnv }.json`,
 					path: path.join( __dirname, 'server', 'bundler' ),
 					assetExtraPath: extraPath,
 				} ),
