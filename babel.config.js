@@ -8,6 +8,7 @@ const isBrowser = isCalypsoClient || 'true' === process.env.TARGET_BROWSER;
 const modules = isBrowser ? false : 'commonjs'; // Use commonjs for Node
 const codeSplit = require( './server/config' ).isEnabled( 'code-splitting' );
 
+// Use target configuration in package.json for browser builds.
 const targets = isBrowser ? undefined : { node: 'current' };
 
 const config = {
