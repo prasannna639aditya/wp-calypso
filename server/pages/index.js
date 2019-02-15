@@ -101,11 +101,12 @@ function isUAInBrowserslist( userAgentString, environment = 'defaults' ) {
 }
 
 function getBuildTargetFromRequest( request ) {
+	const isDesktop = calypsoEnv === 'desktop';
 	const isEvergreen = isUAInBrowserslist( request.useragent.source, 'evergreen' );
 	const isForcedFallback = request.query.forceFallback;
 	// Development is always evergreen.
 	const isDevelopment = process.env.NODE_ENV === 'development';
-	return isDevelopment || ( isEvergreen && ! isForcedFallback ) ? 'evergreen' : null;
+	return isDesktop || isDevelopment || ( isEvergreen && ! isForcedFallback ) ? 'evergreen' : null;
 }
 
 const ASSETS_PATH = path.join( __dirname, '../', 'bundler' );
