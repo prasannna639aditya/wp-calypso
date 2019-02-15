@@ -373,14 +373,15 @@ function getWebpackConfig( {
 			new WebpackRTLPlugin( {
 				minify: ! isDevelopment,
 			} ),
-			new AssetsWriter( {
-				filename:
-					browserslistEnvironment === 'defaults'
-						? 'assets-fallback.json'
-						: `assets-${ browserslistEnvironment }.json`,
-				path: path.join( __dirname, 'server', 'bundler' ),
-				assetExtraPath: extraPath,
-			} ),
+			isCalypsoClient &&
+				new AssetsWriter( {
+					filename:
+						browserslistEnvironment === 'defaults'
+							? 'assets-fallback.json'
+							: `assets-${ browserslistEnvironment }.json`,
+					path: path.join( __dirname, 'server', 'bundler' ),
+					assetExtraPath: extraPath,
+				} ),
 			new DuplicatePackageCheckerPlugin(),
 			shouldCheckForCycles &&
 				new CircularDependencyPlugin( {
