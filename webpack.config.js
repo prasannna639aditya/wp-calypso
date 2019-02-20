@@ -52,6 +52,10 @@ const browserslistEnv = process.env.BROWSERSLIST_ENV || defaultBrowserslistEnv;
 const browsers = browserslist( null, { env: browserslistEnv } );
 const extraPath = browserslistEnv === 'defaults' ? 'fallback' : browserslistEnv;
 
+if ( ! process.env.BROWSERSLIST_ENV ) {
+	process.env.BROWSERSLIST_ENV = browserslistEnv;
+}
+
 /**
  * Plugin that generates the `public/custom-properties.css` file before compilation
  */
