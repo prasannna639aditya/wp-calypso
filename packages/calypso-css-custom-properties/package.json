@@ -33,6 +33,7 @@
 		"access": "public"
 	},
 	"scripts": {
+		"clean": "npx rimraf dist src/__color-studio",
 		"build": "node bin/build-custom-properties-css.js",
 		"postinstall": "node bin/postinstall.js"
 	}

@@ -36,6 +36,7 @@
 		"url": "^0.11.0"
 	},
 	"scripts": {
+		"clean": "npx rimraf dist",
 		"build": "node ../../bin/build-package"
 	}
 }
