@@ -19,7 +19,10 @@ import { getABTestVariation, getSavedVariations } from 'lib/abtest';
 import analytics from 'lib/analytics';
 import { cartItems } from 'lib/cart-values';
 import { isDomainTransfer } from 'lib/products-values';
-import { supportsPrivacyProtectionPurchase } from 'lib/cart-values/cart-items';
+import {
+	supportsPrivacyProtectionPurchase,
+	planItem as getCartItemForPlan,
+} from 'lib/cart-values/cart-items';
 
 // State actions and selectors
 import { SIGNUP_OPTIONAL_DEPENDENCY_SUGGESTED_USERNAME_SET } from 'state/action-types';
@@ -603,7 +606,7 @@ export function isPlanFulfilled( stepName, defaultDependencies, nextProps ) {
 		SignupActions.submitSignupStep( { stepName: stepName, cartItem }, [], { cartItem } );
 		recordExcludeStepEvent( stepName, sitePlanSlug );
 		fulfilledDependencies = fulfilledDependencies.concat( [ 'cartItem' ] );
-	} else if ( defaultDependencies &&  defaultDependencies.cartItem ) {
+	} else if ( defaultDependencies && defaultDependencies.cartItem ) {
 		const cartItem = getCartItemForPlan( defaultDependencies.cartItem );
 		SignupActions.submitSignupStep( { stepName, cartItem }, [], { cartItem } );
 		recordExcludeStepEvent( stepName, defaultDependencies.cartItem );
@@ -696,5 +699,3 @@ export function isSiteTopicFulfilled( stepName, nextProps ) {
 		flows.excludeStep( stepName );
 	}
 }
-
-
