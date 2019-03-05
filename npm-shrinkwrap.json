@@ -3238,16 +3238,33 @@
 			"integrity": "sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg=="
 		},
 		"autoprefixer": {
-			"version": "9.4.4",
-			"resolved": "https://registry.npmjs.org/autoprefixer/-/autoprefixer-9.4.4.tgz",
-			"integrity": "sha512-7tpjBadJyHKf+gOJEmKhZIksWxdZCSrnKbbTJNsw+/zX9+f//DLELRQPWjjjVoDbbWlCuNRkN7RfmZwDVgWMLw==",
+			"version": "9.4.10",
+			"resolved": "https://registry.npmjs.org/autoprefixer/-/autoprefixer-9.4.10.tgz",
+			"integrity": "sha512-XR8XZ09tUrrSzgSlys4+hy5r2/z4Jp7Ag3pHm31U4g/CTccYPOVe19AkaJ4ey/vRd1sfj+5TtuD6I0PXtutjvQ==",
 			"requires": {
-				"browserslist": "^4.3.7",
-				"caniuse-lite": "^1.0.30000926",
+				"browserslist": "^4.4.2",
+				"caniuse-lite": "^1.0.30000940",
 				"normalize-range": "^0.1.2",
 				"num2fraction": "^1.2.2",
-				"postcss": "^7.0.7",
+				"postcss": "^7.0.14",
 				"postcss-value-parser": "^3.3.1"
+			},
+			"dependencies": {
+				"browserslist": {
+					"version": "4.4.2",
+					"resolved": "https://registry.npmjs.org/browserslist/-/browserslist-4.4.2.tgz",
+					"integrity": "sha512-ISS/AIAiHERJ3d45Fz0AVYKkgcy+F/eJHzKEvv1j0wwKGKD9T3BrwKr/5g45L+Y4XIK5PlTqefHciRFcfE1Jxg==",
+					"requires": {
+						"caniuse-lite": "^1.0.30000939",
+						"electron-to-chromium": "^1.3.113",
+						"node-releases": "^1.1.8"
+					}
+				},
+				"caniuse-lite": {
+					"version": "1.0.30000940",
+					"resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30000940.tgz",
+					"integrity": "sha512-rp/086IBUfCsNgBpko6DGQv674jRjeXPesDatDB2kxrkmDfD+S5Gesw+uT8YjpRWvLKLMRBy72SLRZ8I0EgQFw=="
+				}
 			}
 		},
 		"autosize": {
@@ -9163,7 +9180,7 @@
 				"jed": "1.1.1",
 				"lodash": "^4.7.11",
 				"lru": "^3.1.0",
-				"moment-timezone": "^0.5.16",
+				"moment-timezone": "^0.5.23",
 				"react": "^16.6.3",
 				"xgettext-js": "^2.0.0"
 			}
