@@ -6,7 +6,7 @@ import { Path, Polygon, SVG } from '@wordpress/components';
 const JetpackLogo = () => (
 	<SVG
 		width={ 24 }
-		height={ size }
+		height={ 24 }
 		viewBox="0 0 32 32"
 	>
 		<Path
