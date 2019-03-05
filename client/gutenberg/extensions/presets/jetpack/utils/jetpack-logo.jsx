@@ -2,7 +2,6 @@
  * External dependencies
  */
 import { Path, Polygon, SVG } from '@wordpress/components';
-import classNames from 'classnames';
 
 const JetpackLogo = ( { size = 32, className } ) => (
 	<SVG
