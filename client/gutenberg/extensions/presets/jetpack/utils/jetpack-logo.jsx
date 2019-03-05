@@ -3,7 +3,7 @@
  */
 import { Path, Polygon, SVG } from '@wordpress/components';
 
-const JetpackLogo = ( { size = 32, className } ) => (
+const JetpackLogo = () => (
 	<SVG
 		className={ classNames( 'jetpack-logo', className ) }
 		width={ size }
