@@ -6871,9 +6871,9 @@
 			}
 		},
 		"eslint": {
-			"version": "5.14.1",
-			"resolved": "https://registry.npmjs.org/eslint/-/eslint-5.14.1.tgz",
-			"integrity": "sha512-CyUMbmsjxedx8B0mr79mNOqetvkbij/zrXnFeK2zc3pGRn3/tibjiNAv/3UxFEyfMDjh+ZqTrJrEGBFiGfD5Og==",
+			"version": "5.15.1",
+			"resolved": "https://registry.npmjs.org/eslint/-/eslint-5.15.1.tgz",
+			"integrity": "sha512-NTcm6vQ+PTgN3UBsALw5BMhgO6i5EpIjQF/Xb5tIh3sk9QhrFafujUOczGz4J24JBlzWclSB9Vmx8d+9Z6bFCg==",
 			"dev": true,
 			"requires": {
 				"@babel/code-frame": "^7.0.0",
@@ -6882,7 +6882,7 @@
 				"cross-spawn": "^6.0.5",
 				"debug": "^4.0.1",
 				"doctrine": "^3.0.0",
-				"eslint-scope": "^4.0.0",
+				"eslint-scope": "^4.0.2",
 				"eslint-utils": "^1.3.1",
 				"eslint-visitor-keys": "^1.0.0",
 				"espree": "^5.0.1",
@@ -6934,6 +6934,16 @@
 					"dev": true,
 					"requires": {
 						"ms": "^2.1.1"
+					}
+				},
+				"eslint-scope": {
+					"version": "4.0.2",
+					"resolved": "https://registry.npmjs.org/eslint-scope/-/eslint-scope-4.0.2.tgz",
+					"integrity": "sha512-5q1+B/ogmHl8+paxtOKx38Z8LtWkVGuNt3+GQNErqwLl6ViNp/gdJGMCjZNxZ8j/VYjDNZ2Fo+eQc1TAVPIzbg==",
+					"dev": true,
+					"requires": {
+						"esrecurse": "^4.1.0",
+						"estraverse": "^4.1.1"
 					}
 				},
 				"ignore": {
@@ -9163,7 +9173,7 @@
 				"jed": "1.1.1",
 				"lodash": "^4.7.11",
 				"lru": "^3.1.0",
-				"moment-timezone": "^0.5.16",
+				"moment-timezone": "^0.5.23",
 				"react": "^16.6.3",
 				"xgettext-js": "^2.0.0"
 			}
