@@ -150,10 +150,6 @@ export class CountrySpecificPaymentFields extends Component {
 						label: translate( 'State' ),
 					} ) }
 				</div>
-
-				{ this.createField( 'postal-code', Input, {
-					label: translate( 'Postal Code' ),
-				} ) }
 			</div>
 		);
 	}

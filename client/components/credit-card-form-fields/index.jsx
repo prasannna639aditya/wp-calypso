@@ -184,7 +184,7 @@ export class CreditCardFormFields extends React.Component {
 						onCountrySelected: this.updateFieldValues,
 					} ) }
 
-					{ countryDetailsRequired ? (
+					{ countryDetailsRequired && (
 						<CountrySpecificPaymentFields
 							countryCode={ this.getFieldValue( 'country' ) }
 							countriesList={ countriesList }
@@ -192,13 +192,13 @@ export class CreditCardFormFields extends React.Component {
 							getFieldValue={ this.getFieldValue }
 							handleFieldChange={ this.updateFieldValues }
 						/>
-					) : (
-						this.createField( 'postal-code', Input, {
+					) }
+
+					{ this.createField( 'postal-code', Input, {
 							label: translate( 'Postal Code', {
 								comment: 'Postal code on credit card form',
 							} ),
-						} )
-					) }
+						} ) }
 				</div>
 			</div>
 		);
