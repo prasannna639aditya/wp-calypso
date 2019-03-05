@@ -10,7 +10,6 @@ const JetpackLogo = () => (
 		viewBox="0 0 32 32"
 	>
 		<Path
-			className="jetpack-logo__icon-circle"
 			fill="#00be28"
 			d="M16,0C7.2,0,0,7.2,0,16s7.2,16,16,16s16-7.2,16-16S24.8,0,16,0z"
 		/>
