@@ -116,18 +116,5 @@ exports[`<CountrySpecificPaymentFields /> should render 1`] = `
       value=""
     />
   </div>
-  <Input
-    additionalClasses="checkout__checkout-field country-brazil"
-    autoComplete="off"
-    autoFocus={false}
-    disabled={false}
-    isError={false}
-    label="Postal Code"
-    labelClass="checkout__form-label"
-    name="postal-code"
-    onBlur={[Function]}
-    onChange={[Function]}
-    value=""
-  />
 </div>
 `;
